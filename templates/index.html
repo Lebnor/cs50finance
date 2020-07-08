@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    home
+{% endblock %}
+
+
+{% block main %}
+
+    <div class="container">
+        <div class="mb-5 text-primary">
+            <h1>Hello, {{ user.username }}.</h1>
+            <h3>Here are your stocks:</h3>
+        </div>
+    </div>
+
+    <div class="table-responsive-sm">
+        <table class="table table-striped ">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for row in stocks %}
+
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ row['symbol'] }}</td>
+                    <td>{{ row['name'] }}</td>
+                    <td>{{ row['amount'] }}</td>
+                    <td>{{ '$%0.2f'|format(row['price']) }}</td>
+                    <td>{{ '$%0.2f'|format(row['total']) }}</td>
+                </tr>
+
+                {% endfor %}
+                <tr class="mt-5">
+                    <td></td>
+                    <td><strong>Cash</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><strong> {{ user.cash|numberFormat  }} </strong> </td>
+                </tr>
+                <tr class="mt-5">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><strong>Total: {{ total }}</strong> </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
