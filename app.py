@@ -16,7 +16,7 @@ from jinja2 import Environment
 
 # Configure application
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://igdlkwpccoxodr:6732c3b2ac8d712593e7818bd233010517aee52ba68692cc46d4fc4278e6803e@ec2-34-224-229-81.compute-1.amazonaws.com:5432/d2qihlacmibfub'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://feahryoiwaezqp:b3a8caf618c06d2617ee27e2785f707e7fd4f6ec3ba8f52b148356a5d1605db5@ec2-50-17-21-170.compute-1.amazonaws.com:5432/d4latc00jp3afs'
 db = SQLAlchemy(app)
 
 app.config['SECRET_KEY'] = 'agjiodfgmkldrgoiergdlfkmdfglkdfg'
