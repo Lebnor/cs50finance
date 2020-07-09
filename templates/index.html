@@ -7,6 +7,11 @@
 
 {% block main %}
 
+
+<link href="https://unpkg.com/bootstrap-table@1.17.0/dist/bootstrap-table.min.css" rel="stylesheet">
+<script src="https://unpkg.com/bootstrap-table@1.17.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.17.0/dist/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+
     <div class="container">
         <div class="mb-5 text-primary">
             <h1>Hello, {{ user.username }}.</h1>
@@ -14,49 +19,108 @@
         </div>
     </div>
 
-    <div class="table-responsive-sm">
-        <table class="table table-striped ">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Symbol</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Total</th>
-                </tr>
-            </thead>
+    
+    <!-- <div class="container-sm" >
+        <div class="row">
+            
+            <div class="table-responsive-sm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Symbol</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
 
-            <tbody>
-                {% for row in stocks %}
+                    <tbody>
+                        {% for row in stocks %}
 
-                <tr>
-                    <th scope="row">{{ loop.index }}</th>
-                    <td>{{ row['symbol'] }}</td>
-                    <td>{{ row['name'] }}</td>
-                    <td>{{ row['amount'] }}</td>
-                    <td>{{ '$%0.2f'|format(row['price']) }}</td>
-                    <td>{{ '$%0.2f'|format(row['total']) }}</td>
-                </tr>
+                        <tr>
+                            <th scope="row">{{ loop.index }}</th>
+                            <td>{{ row['symbol'] }}</td>
+                            <td>{{ row['name'] }}</td>
+                            <td>{{ row['amount'] }}</td>
+                            <td>{{ '$%0.2f'|format(row['price']) }}</td>
+                            <td>{{ '$%0.2f'|format(row['total']) }}</td>
+                        </tr>
 
-                {% endfor %}
-                <tr class="mt-5">
-                    <td></td>
-                    <td><strong>Cash</strong></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><strong> {{ user.cash|numberFormat  }} </strong> </td>
-                </tr>
-                <tr class="mt-5">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><strong>Total: {{ total }}</strong> </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                        {% endfor %}
+                        <tr class="mt-5">
+                            <td></td>
+                            <td><strong>Cash</strong></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong> {{ user.cash|numberFormat  }} </strong> </td>
+                        </tr>
+                        <tr class="mt-5">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total: {{ total }}</strong> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> -->
+
+    <table
+        id="table"
+        data-show-columns="true"
+        data-search="true"
+        data-mobile-responsive="true"
+        data-check-on-init="true">
+        <thead>
+            <tr>
+            <th data-field="id" data-sortable="true">Symbol</th>
+            <th data-field="name" data-sortable="true">Name</th>
+            <th data-field="amount" data-sortable="true">Amount</th>
+            <th data-field="price" data-sortable="true">Price</th>
+            <th data-field="total" data-sortable="true">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in stocks %}
+
+                        <tr>
+                            <th scope="row">{{ row['symbol'] }}</th>
+                            <!-- <td>{{ row['symbol'] }}</td> -->
+                            <td>{{ row['name'] }}</td>
+                            <td>{{ row['amount'] }}</td>
+                            <td>{{ '$%0.2f'|format(row['price']) }}</td>
+                            <td>{{ '$%0.2f'|format(row['total']) }}</td>
+                        </tr>
+
+                        {% endfor %}
+                        <tr class="mt-5">
+                            <!-- <td></td> -->
+                            <td><strong>Cash</strong></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><strong> {{ user.cash|numberFormat  }} </strong> </td>
+                        </tr>
+                        <tr class="mt-5">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <!-- <td></td> -->
+                            <td><strong>Total: {{ total }}</strong> </td>
+                        </tr>
+        </tbody>
+    </table>
+
+    <script>
+        $(function() {
+          $('#table').bootstrapTable()
+        })
+      </script>
 {% endblock %}

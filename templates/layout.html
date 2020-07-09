@@ -34,7 +34,7 @@
                 {% if session.user_id %}
                     <ul class="navbar-nav mr-auto mt-2">
                         <li class="nav-item"><a class="nav-link" href="/quote"><img src="https://img.icons8.com/nolan/32/stocks.png"/> Quote</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/buy"><img src="/static/icons8-buying-32.png"/> Buy</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/buy"><img src="https://img.icons8.com/nolan/32/shopping-cart-loaded.png"/> Buy</a></li>
                         <li class="nav-item"><a class="nav-link" href="/sell"><img src="https://img.icons8.com/nolan/32/get-cash.png"/> Sell</a></li>
                         <li class="nav-item"><a class="nav-link" href="/history"><img src="https://img.icons8.com/nolan/32/payment-history.png"/> History</a></li>
                     </ul>
@@ -58,7 +58,7 @@
             </header>
         {% endif %}
 
-        <main class="container p-5 mx">
+        <main class="p-5">
             {% block main %}{% endblock %}
         </main>
 

@@ -52,8 +52,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Configure CS50 Library to use SQLite database
-
+# iex data 
 os.environ.setdefault("API_KEY", "pk_18b94b2663e14472a0090cfcea4081ec")
 
 # Make sure API key is set
@@ -87,10 +86,7 @@ class History(db.Model):
 def index():
     """Show portfolio of stocks"""
     id = session['user_id']
-    # user = db.execute("SELECT username FROM users WHERE id=?", session['user_id'])
     user = Users.query.filter_by(id=id).first()
-    # stocks = db.execute("SELECT * FROM history WHERE user_id=?", session['user_id'])
-    # stocks = History.query.filter_by(user_id=id).all()
     stocks = History.query.filter_by(user_id=id).all()
     print(stocks)
     user_stock = {}
@@ -116,11 +112,8 @@ def index():
             user_stock[symbol]['total'] = item.price * item.amount
 
     print(user)
-    # cash = db.execute("SELECT cash FROM users WHERE id=?", session['user_id'])[0]['cash']
     cash = Users.query.filter_by(id=id).first().cash
     
-    
-    print("===CASH===", cash)
     total = total + cash
 
     return render_template("index.html", user=user, stocks=user_stock.values(), cash=cash, total=usd(total))
@@ -142,11 +135,8 @@ def buy():
             return apology("Enter a real company symbol")
 
         cost = lookup(symbol)['price'] * quantity
-        # current_money = db.execute("SELECT cash FROM users WHERE id=?", session['user_id'])
         user = Users.query.filter_by(id=session['user_id']).first()
         current_money = user.cash
-        print(current_money)
-        print(cost)
 
         # not enough money
         if current_money - cost < 0:
@@ -174,8 +164,6 @@ def buy():
 def history():
     """Show history of transactions"""
     user_id = session['user_id']
-    # data = db.execute("SELECT symbol, amount, price, date FROM history WHERE user_id=?", user_id)
-    # print("  DATA", data)
     history = History.query.filter_by(user_id=user_id).all()
     data = []
     
@@ -211,8 +199,8 @@ def login():
         # Query database for username
         username = request.form.get("username")
         input = request.form.get("password")
-        # entered_password = hash_password(input)
         user_password = Users.query.filter_by(username=username).first().hash
+
         # Ensure username exists and password is correct
         if not username:
             return apology("invalid username", 403)
@@ -281,7 +269,6 @@ def register():
 
         # Hash the password
         pw_hash = hash_password(password)
-        print("===PW_HASH===", pw_hash)
 
         # Insert the user into the databse
         newUser = Users(username=username, hash=pw_hash, cash="10000")
@@ -298,7 +285,6 @@ def sell():
     user_id = session['user_id']
 
     if request.method == "GET":
-        # stocks = db.execute("SELECT DISTINCT symbol FROM history WHERE user_id=?", user_id)
         stocks = set(History.query.filter_by(user_id=user_id).all())
 
         all_history = History.query.all()
@@ -306,29 +292,28 @@ def sell():
         for item in all_history:
             if item.user_id == user_id and item.symbol.lower() not in options:
                 options.append(item.symbol)
-        print("STOCKS: ", stocks)
+
         return render_template("sell.html", stocks=options)
 
     else:
+        # set details of transaction
         sold_stock = request.form.get("symbol")
         sold_amount = float(request.form.get("amount"))
-        print("  SOLD_AMOUNT", sold_amount)
         price = lookup(sold_stock)['price']
         now = time.time()
-        # db.execute("INSERT into history (user_id, symbol, amount, price, date) VALUES (?, ?, ?, ?, ?)",
-        # user_id, sold_stock, sold_amount * - 1, price, now)
+
+        # update history with this transaction
         purchase_history = History(user_id=user_id, symbol=sold_stock, amount=(sold_amount * - 1), price=price, date=now)
         db.session.add(purchase_history)
         db.session.commit()
-        # current_money = db.execute("SELECT cash FROM users WHERE id=?", user_id)[0]['cash']
+
+        # update user's money
         current_money = Users.query.filter_by(id=user_id).first().cash
-        print("  CURRENT MONEY", current_money)
         money_updated = current_money + (sold_amount * price)
-        # db.execute("UPDATE users SET cash=? WHERE id=?", money_updated, user_id)
         user = Users.query.filter_by(id=user_id).first()
         user.cash = money_updated
         db.session.commit()
-        print("  ", sold_stock, sold_amount)
+
         return redirect("/")
 
 def errorhandler(e):
