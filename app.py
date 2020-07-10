@@ -124,11 +124,12 @@ def index():
 def buy():
     """Buy shares of stock"""
     if request.method == "GET":
-        return render_template("buy.html")
+        symbols = ["a", "v", "aapl"]
+        return render_template("buy.html", symbols = symbols)
 
     else:
         quantity = float(request.form.get("quantity"))
-        symbol = request.form.get("symbol")
+        symbol = request.form.get("symbol").lower()
 
         # check symbol is real
         if not lookup(symbol):
