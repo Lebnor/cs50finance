@@ -162,6 +162,8 @@ def buy():
             user.cash = updated_money
             db.session.commit()
 
+            session['bought'] = True
+            flash('Bought!')
             return redirect("/")
 
 
@@ -320,6 +322,7 @@ def sell():
         user.cash = money_updated
         db.session.commit()
 
+        flash('Sold!')
         return redirect("/")
 
 def errorhandler(e):

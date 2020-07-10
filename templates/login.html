@@ -6,6 +6,7 @@
 
 {% block main %}
 
+<link type="text/javascript" href="static/btn-loading.js">
 
 <div class="container">
     <div class="">
@@ -18,12 +19,22 @@
                     <input class="form-control" name="password" placeholder="Password" type="password">
                 </div>
                 
-                <button class="btn btn-primary" type="submit">Log In</button>
+                <button data-loading-text="Loading..." id="login" class="spinner-grow btn btn-primary" type="submit">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Log In</button>
             </form>
         </div>
        
     </div>
-
+    
 </div>
     
+    <script>
+        var btn = document.getElementById('login')
+        btn.onclick = function() {
+            //   btn.classList.remove('btn-primary');
+            btn.classList.add('btn-info');
+            btn.innerHTML = 'Loading...';
+        }
+    </script>
 {% endblock %}

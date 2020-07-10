@@ -30,9 +30,16 @@
                             <input class="col-12 form-control" id="amount" name="amount" type="number" placeholder="Amount to sell" min="1" required>
                         </div>
 
-                        <button class="btn btn-primary" type="submit"><img src="https://img.icons8.com/nolan/32/economic-improvement.png"/> Sell</button>
+                        <button id="sell" class="btn btn-primary" type="submit"><img src="https://img.icons8.com/nolan/32/economic-improvement.png"/> Sell</button>
                 </form>
             </div>
         </div>
     </div>
+    <script>
+        var  sell = document.getElementById('sell');
+        sell.onclick = function() {
+            sell.classList.add('btn-info');
+            sell.innerHTML = 'Processing...';
+        }
+    </script>
 {% endblock %}

@@ -10,7 +10,7 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-sm-6 col-12 justify-content-center sticky-top">
+            <div class="col-sm-5 col-12 justify-content-center sticky-top">
                 <form id="form" class="" action="/buy" method="post">
                     <div class="form-group ">
                         <label class="" for="symbol">Enter Symbol</label>
@@ -45,6 +45,10 @@
         </div>
     </div>
         <script>
-          
+          var submit = document.getElementById('submit');
+          submit.onclick = function() {
+              submit.classList.add('btn-info');
+              submit.innerHTML = '<img src="https://img.icons8.com/color/32/000000/loading.png"/> Processing...';
+          }
         </script>
 {% endblock %}
