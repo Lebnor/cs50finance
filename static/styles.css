@@ -64,3 +64,11 @@ main img
 	#unseen table td:nth-child(8),
 	#unseen table th:nth-child(8){display: none;}
 }
+
+.symbol-list::after {
+    content: ' dasd ';
+    background-image: url("https://img.icons8.com/nolan/32/circled-down-2.png");
+    background-color: black;
+    width: 5px;
+    height: 5px;
+}

@@ -124,8 +124,13 @@ def index():
 def buy():
     """Buy shares of stock"""
     if request.method == "GET":
-        symbols = ["a", "v", "aapl"]
-        return render_template("buy.html", symbols = symbols)
+        symbols = []
+        with open("NYSE.txt") as file:
+            file.readline()
+            for line in file:
+                symbols.append(line.split('\t', 1)[0])
+            
+            return render_template("buy.html", symbols = symbols)
 
     else:
         quantity = float(request.form.get("quantity"))
