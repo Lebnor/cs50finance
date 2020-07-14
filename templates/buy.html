@@ -28,14 +28,7 @@
 
                 
             <div class="col mx">
-                <!-- <div class="">
-                    <h3 class="text-primary center-text" > List of symbols</h3>
-                        <ul class="symbol-list list list-unstyled">
-                            {% for symbol in symbols %}
-                                 <p class="text-justify d-inline text-justify"> {{ symbol }}</p>
-                            {% endfor %}    
-                        </ul>
-                </div> -->
+
                
 
                 <div class="">
@@ -58,7 +51,7 @@
           var submit = document.getElementById('submit');
           submit.onclick = function() {
               submit.classList.add('btn-info');
-              submit.innerHTML = '<img src="https://img.icons8.com/color/32/000000/loading.png"/> Processing...';
+              submit.innerHTML = 'Processing...';
           }
         </script>
 {% endblock %}

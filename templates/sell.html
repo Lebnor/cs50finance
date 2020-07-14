@@ -7,6 +7,19 @@
 
 {% block main %}
 
+
+{% if not stocks %}
+    
+    <div class="container">
+        <div class="row justify-content-center mb-5 mt-4">
+            <h3 class="text-primary">You don't have any stocks to sell!</h3>
+        </div>
+        <div class="row justify-content-center">
+            <a href="/buy" class="border-bottom text-muted">Click here to buy</a>
+
+        </div>
+    </div>
+{% else  %}
     <div class="container">
         <h3 class="text-primary">Select from the menu below which of your stocks to sell</h3>
         <h3 class="text-primary">and how many:</h3>
@@ -18,7 +31,7 @@
             <div class="text-center col-12 col-sm-6 col-md-3">
                 <form class="form mt-5" action="/sell" method="post">
                     <div class="form-group">
-                        <select class="justify-content-center form-control" id="symbol" name="symbol">
+                        <select class="justify-content-center form-control" id="symbol" name="symbol" required>
                             {% for stock in stocks %}
                                 <option>{{ stock }}</option>
                             {% endfor %}
@@ -35,6 +48,7 @@
             </div>
         </div>
     </div>
+{% endif %}
     <script>
         var  sell = document.getElementById('sell');
         sell.onclick = function() {

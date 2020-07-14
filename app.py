@@ -95,10 +95,8 @@ def index():
         symbol = item.symbol
 
         if  item.symbol in user_stock:
-
             user_stock[symbol]['amount'] = user_stock[symbol]['amount'] + item.amount
             user_stock[symbol]['total'] = round(item.price / 100.0 *  user_stock[symbol]['amount'], 2)
-
         else:
             user_stock[symbol] = {}
             user_stock[symbol]['symbol'] = item.symbol
@@ -106,6 +104,12 @@ def index():
             user_stock[symbol]['amount'] = item.amount
             user_stock[symbol]['price'] = item.price / 100.0
             user_stock[symbol]['total'] = item.price * item.amount / 100.0
+        
+        # no need to show if user has 0 of a stock
+        if user_stock[symbol]['amount'] == 0:
+            del(user_stock[symbol])
+
+                
 
     cash = Users.query.filter_by(id=id).first().cash / 100.0
     
@@ -172,9 +176,9 @@ def history():
     
     for row in history:
         data.append({
-            'price' : row.price,
-            'amount' : row.amount,
             'symbol' : row.symbol,
+            'amount' : row.amount,
+            'price' : usd(row.price / 100.0),
             'date' : time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(row.date))
         })
 
@@ -288,13 +292,19 @@ def sell():
     user_id = session['user_id']
 
     if request.method == "GET":
-        stocks = set(History.query.filter_by(user_id=user_id).all())
 
-        all_history = History.query.all()
+        stocks = History.query.filter_by(user_id=user_id).all()
         options = []
-        for item in all_history:
-            if item.user_id == user_id and item.symbol.lower() not in options:
+        total = 0
+        for item in stocks:            
+
+            total += item.amount
+            print(total)
+            if item.symbol.lower() not in options:
                 options.append(item.symbol)
+            
+            if total == 0:
+                options.remove(item.symbol.lower())
 
         return render_template("sell.html", stocks=options)
 
