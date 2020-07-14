@@ -13,7 +13,6 @@ from helpers import apology, login_required, lookup, usd, hash_password, verify_
 import time
 from jinja2 import Environment
 
-
 # Configure application
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://feahryoiwaezqp:b3a8caf618c06d2617ee27e2785f707e7fd4f6ec3ba8f52b148356a5d1605db5@ec2-50-17-21-170.compute-1.amazonaws.com:5432/d4latc00jp3afs'
@@ -88,35 +87,31 @@ def index():
     id = session['user_id']
     user = Users.query.filter_by(id=id).first()
     stocks = History.query.filter_by(user_id=id).all()
-    print(stocks)
     user_stock = {}
 
     total = 0
-    print("===stocks===", stocks)
     for item in stocks:
-        print("===", item)
-        total = total + item.price * item.amount
+        total = item.price * item.amount / 100.0
         symbol = item.symbol
 
         if  item.symbol in user_stock:
 
             user_stock[symbol]['amount'] = user_stock[symbol]['amount'] + item.amount
-            user_stock[symbol]['total'] = round(item.price *  user_stock[symbol]['amount'], 2)
+            user_stock[symbol]['total'] = round(item.price / 100.0 *  user_stock[symbol]['amount'], 2)
 
         else:
             user_stock[symbol] = {}
             user_stock[symbol]['symbol'] = item.symbol
             user_stock[symbol]['name'] = lookup(symbol)['name']
             user_stock[symbol]['amount'] = item.amount
-            user_stock[symbol]['price'] = item.price
-            user_stock[symbol]['total'] = item.price * item.amount
+            user_stock[symbol]['price'] = item.price / 100.0
+            user_stock[symbol]['total'] = item.price * item.amount / 100.0
 
-    print(user)
-    cash = Users.query.filter_by(id=id).first().cash
+    cash = Users.query.filter_by(id=id).first().cash / 100.0
     
     total = total + cash
 
-    return render_template("index.html", user=user, stocks=user_stock.values(), cash=cash, total=usd(total))
+    return render_template("index.html", user=user, stocks=user_stock.values(), cash=usd(cash), total=usd(total / 100.0))
 
 
 @app.route("/buy", methods=["GET", "POST"])
@@ -140,7 +135,7 @@ def buy():
         if not lookup(symbol):
             return apology("Enter a real company symbol")
 
-        cost = lookup(symbol)['price'] * quantity
+        cost = lookup(symbol)['price'] * quantity * 100
         user = Users.query.filter_by(id=session['user_id']).first()
         current_money = user.cash
 
@@ -153,7 +148,7 @@ def buy():
             now = time.time()
 
             # save purchase history
-            purchase_history = History(user_id=user_id, symbol=symbol, amount=quantity, date=now, price=lookup(symbol)['price'])
+            purchase_history = History(user_id=user_id, symbol=symbol, amount=quantity, date=now, price=lookup(symbol)['price'] * 100)
             db.session.add(purchase_history)
             db.session.commit()
 
@@ -279,7 +274,7 @@ def register():
         pw_hash = hash_password(password)
 
         # Insert the user into the databse
-        newUser = Users(username=username, hash=pw_hash, cash="10000")
+        newUser = Users(username=username, hash=pw_hash, cash="1000000")
         db.session.add(newUser)
         db.session.commit()
         return redirect("/")
@@ -307,7 +302,7 @@ def sell():
         # set details of transaction
         sold_stock = request.form.get("symbol")
         sold_amount = float(request.form.get("amount"))
-        price = lookup(sold_stock)['price']
+        price = lookup(sold_stock)['price'] * 100
         now = time.time()
 
         # update history with this transaction

@@ -1,2 +1,3 @@
 .flaskenv
 env
+node_modules

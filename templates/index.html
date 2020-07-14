@@ -24,53 +24,59 @@
     </div>
 
     
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table
+            id="table"
+            data-show-columns="true"
+            data-show-footer="true"
+            data-search="true"
+            data-mobile-responsive="true"
+            data-check-on-init="true">
+            <thead>
+                <tr>
+                <th data-field="id" data-sortable="true">Symbol</th>
+                <th data-field="name" data-sortable="true">Name</th>
+                <th data-field="amount" data-sortable="true">Amount</th>
+                <th data-field="price" data-sortable="true">Price</th>
+                <th data-field="total" >Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                            {% for row in stocks %}
 
-    <table
-        id="table"
-        data-show-columns="true"
-        data-search="true"
-        data-mobile-responsive="true"
-        data-check-on-init="true">
-        <thead>
-            <tr>
-            <th data-field="id" data-sortable="true">Symbol</th>
-            <th data-field="name" data-sortable="true">Name</th>
-            <th data-field="amount" data-sortable="true">Amount</th>
-            <th data-field="price" data-sortable="true">Price</th>
-            <th data-field="total" data-sortable="true">Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in stocks %}
+                            <tr>
+                                <th scope="row">{{ row['symbol'] }}</th>
+                                <!-- <td>{{ row['symbol'] }}</td> -->
+                                <td>{{ row['name'] }}</td>
+                                <td>{{ row['amount'] }}</td>
+                                <td>{{ '$%0.2f'|format(row['price']) }}</td>
+                                <td>{{ '$%0.2f'|format(row['total']) }}</td>
+                            </tr>
 
-                        <tr>
-                            <th scope="row">{{ row['symbol'] }}</th>
-                            <!-- <td>{{ row['symbol'] }}</td> -->
-                            <td>{{ row['name'] }}</td>
-                            <td>{{ row['amount'] }}</td>
-                            <td>{{ '$%0.2f'|format(row['price']) }}</td>
-                            <td>{{ '$%0.2f'|format(row['total']) }}</td>
-                        </tr>
+                            {% endfor %}
+                        
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4">Available cash</th>
+                        <td colspan=""> {{ cash }} </td>
+                    </tr>
+                    <tr>
+                        <th colspan="">Total money</th>
+                        <td colspan=""> {{ total }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
 
-                        {% endfor %}
-                        <tr class="mt-5">
-                            <!-- <td></td> -->
-                            <td><strong>Cash</strong></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><strong> {{ user.cash|numberFormat  }} </strong> </td>
-                        </tr>
-                        <tr class="mt-5">
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <!-- <td></td> -->
-                            <td><strong>Total: {{ total }}</strong> </td>
-                        </tr>
-        </tbody>
-    </table>
+    </div>
+   
+</div>
+
+    
 
     <script>
         $(function() {

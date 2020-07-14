@@ -65,10 +65,15 @@ main img
 	#unseen table th:nth-child(8){display: none;}
 }
 
-.symbol-list::after {
-    content: ' dasd ';
-    background-image: url("https://img.icons8.com/nolan/32/circled-down-2.png");
-    background-color: black;
-    width: 5px;
-    height: 5px;
+/* .symbol-list::after {
+    content:  url("https://img.icons8.com/nolan/48/circled-down-2.png");
+    position: sticky;
+} */
+
+
+
+.symbol-list {
+    max-width: 50vw;
+    max-height: 75vh;
+    overflow-y: scroll;
 }

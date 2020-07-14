@@ -26,16 +26,26 @@
                 </form>
             </div>
 
-            <div class="m-4"></div>
+                
+            <div class="col mx">
+                <!-- <div class="">
+                    <h3 class="text-primary center-text" > List of symbols</h3>
+                        <ul class="symbol-list list list-unstyled">
+                            {% for symbol in symbols %}
+                                 <p class="text-justify d-inline text-justify"> {{ symbol }}</p>
+                            {% endfor %}    
+                        </ul>
+                </div> -->
+               
 
-            <div class="col-sm vh-100">
-                <div class="container">
-                    <div id="symbol-list" class="p-4 border-bottom border-top h-25 overflow-auto d-inline-block vh-100" style="height: 75vh; max-height: 75vh; overflow-y: scroll;">
-                        <h3 class="text-primary"> List of symbols</h3>
-        
+                <div class="">
+                    <h3 class="text-primary center-text" > List of symbols</h3>
+
+                    <div id="symbol-list" class="symbol-list p-4 border-bottom border-top">
+
                         <ul class="list list-unstyled">
                             {% for symbol in symbols %}
-                                <li> {{ symbol }} </li>
+                                 <p class="text-justify d-inline text-justify"> {{ symbol }} </p>
                             {% endfor %}    
                         </ul>
                     </div>
