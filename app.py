@@ -1,4 +1,3 @@
-from __future__ import print_function # In python 2.7
 import os
 import datetime
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
@@ -301,10 +300,10 @@ def sell():
             options[symbol] = item.amount
         else:
             options[symbol] += item.amount
-    show_stocks = []
+    show_stocks = {}
     for k, v in options.items():
         if v > 0:
-            show_stocks.append(k)
+            show_stocks[k] = v
 
     if request.method == "GET":
         return render_template("sell.html", stocks=show_stocks)
