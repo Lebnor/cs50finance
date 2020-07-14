@@ -179,7 +179,7 @@ def history():
             'symbol' : row.symbol,
             'amount' : row.amount,
             'price' : usd(row.price / 100.0),
-            'date' : time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(row.date))
+            'date' : time.strftime('%d-%m-%Y %H:%M:%S', time.localtime(row.date))
         })
 
     return render_template("history.html", data=data)
@@ -277,7 +277,7 @@ def register():
         # Hash the password
         pw_hash = hash_password(password)
 
-        # Insert the user into the databse
+        # Insert the user into the databse. default ten thousand dollars per new user
         newUser = Users(username=username, hash=pw_hash, cash="1000000")
         db.session.add(newUser)
         db.session.commit()
@@ -290,28 +290,35 @@ def register():
 def sell():
     """Sell shares of stock"""
     user_id = session['user_id']
+    stocks = History.query.filter_by(user_id=user_id).all()
+    options = {}
+    total = 0
+    for item in stocks:            
+        
+        symbol = item.symbol.lower()
+        
+        if symbol not in options:
+            options[symbol] = item.amount
+        else:
+            options[symbol] += item.amount
+    show_stocks = []
+    for k, v in options.items():
+        if v > 0:
+            show_stocks.append(k)
 
     if request.method == "GET":
-
-        stocks = History.query.filter_by(user_id=user_id).all()
-        options = []
-        total = 0
-        for item in stocks:            
-
-            total += item.amount
-            print(total)
-            if item.symbol.lower() not in options:
-                options.append(item.symbol)
-            
-            if total == 0:
-                options.remove(item.symbol.lower())
-
-        return render_template("sell.html", stocks=options)
+        return render_template("sell.html", stocks=show_stocks)
 
     else:
         # set details of transaction
         sold_stock = request.form.get("symbol")
+
         sold_amount = float(request.form.get("amount"))
+
+        # check user has this stock
+        if sold_amount > options[sold_stock.lower()]:
+            return apology("You sold more of this stock than you own!")
+
         price = lookup(sold_stock)['price'] * 100
         now = time.time()
 
