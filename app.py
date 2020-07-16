@@ -10,6 +10,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import sys
 from helpers import apology, login_required, lookup, usd, hash_password, verify_password
 import time
+import requests
 from jinja2 import Environment
 
 # Configure application
@@ -122,13 +123,17 @@ def index():
 def buy():
     """Buy shares of stock"""
     if request.method == "GET":
+        api_key = os.environ.get("API_KEY")
+
+        top_10 = requests.get(f"https://api.iextrading.com/1.0/tops").json()[0]['symbol']
+        print(top_10)
         symbols = []
         with open("NYSE.txt") as file:
             file.readline()
             for line in file:
                 symbols.append(line.split('\t', 1)[0])
             
-            return render_template("buy.html", symbols = symbols)
+            return render_template("buy.html", symbols = top_10)
 
     else:
         quantity = float(request.form.get("quantity"))
@@ -335,6 +340,11 @@ def sell():
 
         flash('Sold!')
         return redirect("/")
+
+@app.route("/credits")
+@login_required
+def credits():
+    return render_template("credits.html")
 
 def errorhandler(e):
     """Handle error"""
