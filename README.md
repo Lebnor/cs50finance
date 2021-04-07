@@ -1,5 +1,6 @@
 # cs50 finance
 Last task of problem set 8 of cs50 introduction to computer science: https://cs50.harvard.edu/x/2020/ .
+Link to assignment: https://cs50.harvard.edu/x/2020/tracks/web/finance/
 
 # View site
 The site is hosted on heroku: https://cs50-finance-lielb.herokuapp.com/ .
