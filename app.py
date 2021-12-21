@@ -19,10 +19,10 @@ import os
 
 # Configure application
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://nqmannuvyottvs:2db5c21d8c269e53d247aeab51e6f067ceb40f982875a0dbb9db28d28c946ef4@ec2-18-211-255-95.compute-1.amazonaws.com:5432/d554q9d7sn689i'
 db = SQLAlchemy(app)
 
-engine = create_engine('postgres://nqmannuvyottvs:2db5c21d8c269e53d247aeab51e6f067ceb40f982875a0dbb9db28d28c946ef4@ec2-18-211-255-95.compute-1.amazonaws.com:5432/d554q9d7sn689i')
+# db.engine = create_engine('postgres://nqmannuvyottvs:2db5c21d8c269e53d247aeab51e6f067ceb40f982875a0dbb9db28d28c946ef4@ec2-18-211-255-95.compute-1.amazonaws.com:5432/d554q9d7sn689i')
 
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
