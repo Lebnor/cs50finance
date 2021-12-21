@@ -12,13 +12,17 @@ from helpers import apology, login_required, lookup, usd, hash_password, verify_
 import time
 import requests
 from jinja2 import Environment
+from sqlalchemy import create_engine
 import os
+
 
 
 # Configure application
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
+
+engine = create_engine('postgres://nqmannuvyottvs:2db5c21d8c269e53d247aeab51e6f067ceb40f982875a0dbb9db28d28c946ef4@ec2-18-211-255-95.compute-1.amazonaws.com:5432/d554q9d7sn689i')
 
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
@@ -122,13 +126,13 @@ def index():
 @login_required
 def buy():
     """Buy shares of stock"""
-    if request.method == "GET":
+    if request.method == "GET": 
         api_key = os.environ["API_KEY"]
         url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey=' + api_key
         r = requests.get(url)
-        data = r.json()
+        data = r.json() 
 
-        print(data)
+        print(data) 
         # top_10 = requests.get(f"https://api.iextrading.com/1.0/tops").json()[0]['symbol']
         # print(top_10)
         # symbols = []
