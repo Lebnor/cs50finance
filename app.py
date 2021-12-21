@@ -84,6 +84,8 @@ class History(db.Model):
     def __repr__(self):
         return str(self.__dict__)
 
+db.create_all()
+
 @app.route("/")
 @login_required
 def index():
